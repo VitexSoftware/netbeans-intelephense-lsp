@@ -6,7 +6,7 @@ import org.netbeans.modules.lsp.client.spi.LanguageServerProvider;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 
-@MimeRegistration(mimeType = "text/x-php", service = LanguageServerProvider.class)
+@MimeRegistration(mimeType = "text/x-php5", service = LanguageServerProvider.class)
 public class IntelephenseLanguageServerProvider implements LanguageServerProvider {
 
     @Override
