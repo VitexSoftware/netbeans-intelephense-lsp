@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="IntelephenseLsp" basedir=".">
+    <description>Builds the module suite IntelephenseLsp.</description>
+    <import file="nbproject/build-impl.xml"/>
+</project>
