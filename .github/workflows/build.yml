@@ -1,0 +1,57 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+
+env:
+  NETBEANS_VERSION: "30"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Cache Apache NetBeans platform
+        id: cache-netbeans
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/netbeans
+          key: netbeans-${{ env.NETBEANS_VERSION }}
+
+      - name: Download Apache NetBeans platform
+        if: steps.cache-netbeans.outputs.cache-hit != 'true'
+        run: |
+          curl -sSfL -o "${{ runner.temp }}/netbeans-bin.zip" \
+            "https://archive.apache.org/dist/netbeans/netbeans/${{ env.NETBEANS_VERSION }}/netbeans-${{ env.NETBEANS_VERSION }}-bin.zip"
+          unzip -q "${{ runner.temp }}/netbeans-bin.zip" -d "${{ runner.temp }}"
+
+      - name: Build NBM
+        run: |
+          ant \
+            -Dnbplatform.default.netbeans.dest.dir="${{ runner.temp }}/netbeans" \
+            -Dnbplatform.default.harness.dir="${{ runner.temp }}/netbeans/harness" \
+            nbms
+
+      - name: Upload NBM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: com-vitexsoftware-intelephenselsp
+          path: build/updates/com-vitexsoftware-intelephenselsp.nbm
+
+      - name: Create GitHub release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/updates/com-vitexsoftware-intelephenselsp.nbm

@@ -39,6 +39,8 @@ ant -Dnbplatform.default.netbeans.dest.dir=/path/to/netbeans \
 
 The resulting plugin is written to `build/updates/com-vitexsoftware-intelephenselsp.nbm`.
 
+A GitHub Actions workflow (`.github/workflows/build.yml`) builds the `.nbm` on every push/PR against a cached Apache NetBeans 30 platform, and attaches it to a GitHub release whenever a `v*` tag is pushed — the latest `.nbm` is always available from [Releases](../../releases) without building locally.
+
 ## Installing
 
 In NetBeans: **Tools → Plugins → Downloaded → Add Plugins...**, select the `.nbm` file, then **Install** and restart NetBeans.
