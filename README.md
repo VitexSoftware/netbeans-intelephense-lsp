@@ -23,10 +23,11 @@ Confirmed by reading the Apache NetBeans source (`ide/editor.completion`, `ide/l
 
 ## Configuration
 
-- **Custom binary path**: if `intelephense` isn't on `PATH` (e.g. installed somewhere other than globally via npm), point the plugin at it by adding a JVM system property to `netbeans.conf`'s `netbeans_default_options`:
+- **Custom binary path**: go to **Tools → Options → PHP → Intelephense** and set the full path there — it's a plain sibling tab next to General/Debugging/Annotations/Code Analysis/Jenkins/Frameworks & Tools. (It is *not* an entry inside the "Frameworks & Tools" list itself: that list's registration API, `org.netbeans.modules.php.api.util.UiUtils`, is restricted to an explicit "friend" allow-list of module code name bases baked into the PHP module's own manifest by the Apache NetBeans project — third-party plugins can't add themselves to it. This tab uses the plain public `OptionsPanelController.SubRegistration` API instead, so it needs no such approval.) A JVM system property is also still supported as a fallback default if nothing is saved in Options, useful for scripted setups: add to `netbeans.conf`'s `netbeans_default_options`:
   ```
   -J-Dcom.vitexsoftware.intelephenselsp.path=/custom/path/to/intelephense
   ```
+- **Version display**: the same tab shows the detected Intelephense version, like the tool panels in PHP's own "Frameworks & Tools" list do. Since the `intelephense` CLI has no `--version` flag, this is detected by resolving the configured path (following a PATH lookup and symlinks — a global npm install is typically a symlink such as `/usr/local/bin/intelephense -> ../lib/node_modules/intelephense/lib/intelephense.js`) and reading the `version` field from the npm package's `package.json`, found by walking up from the resolved file.
 - **Restarting the server**: use **Tools → Restart Intelephense Language Server** to stop and relaunch the running Intelephense process — useful after editing its licence file or `intelephense.json` configuration, without restarting all of NetBeans. (NetBeans already auto-restarts the server on its own if the process crashes; this action is for a deliberate, on-demand restart.)
 
 ## Building

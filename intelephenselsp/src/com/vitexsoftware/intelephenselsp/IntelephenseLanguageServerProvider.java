@@ -1,5 +1,6 @@
 package com.vitexsoftware.intelephenselsp;
 
+import com.vitexsoftware.intelephenselsp.options.IntelephenseOptions;
 import java.io.IOException;
 import org.netbeans.api.editor.mimelookup.MimeRegistration;
 import org.netbeans.modules.lsp.client.spi.LanguageIdResolver;
@@ -12,20 +13,13 @@ import org.openide.util.lookup.Lookups;
 @MimeRegistration(mimeType = "text/x-php5", service = LanguageServerProvider.class)
 public class IntelephenseLanguageServerProvider implements LanguageServerProvider {
 
-    /**
-     * Path or executable name for the Intelephense CLI. Override with
-     * {@code -J-Dcom.vitexsoftware.intelephenselsp.path=/custom/path/intelephense}
-     * in netbeans.conf if it is not installed globally on PATH.
-     */
-    private static final String PATH_PROPERTY = "com.vitexsoftware.intelephenselsp.path";
-
     private static volatile ServerRestarter restarter;
 
     @Override
     public LanguageServerDescription startServer(Lookup lkp) {
         restarter = lkp.lookup(ServerRestarter.class);
         try {
-            String command = System.getProperty(PATH_PROPERTY, "intelephense");
+            String command = IntelephenseOptions.getInstance().getPath();
             ProcessBuilder pb = new ProcessBuilder(command, "--stdio");
             pb.redirectError(ProcessBuilder.Redirect.INHERIT);
             Process p = pb.start();
