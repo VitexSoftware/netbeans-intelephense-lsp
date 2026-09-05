@@ -21,6 +21,14 @@ Confirmed by reading the Apache NetBeans source (`ide/editor.completion`, `ide/l
   ```
 - (Optional) an Intelephense Premium licence key placed at `~/intelephense/licence.txt` — Intelephense picks it up automatically without any extra configuration.
 
+## Configuration
+
+- **Custom binary path**: if `intelephense` isn't on `PATH` (e.g. installed somewhere other than globally via npm), point the plugin at it by adding a JVM system property to `netbeans.conf`'s `netbeans_default_options`:
+  ```
+  -J-Dcom.vitexsoftware.intelephenselsp.path=/custom/path/to/intelephense
+  ```
+- **Restarting the server**: use **Tools → Restart Intelephense Language Server** to stop and relaunch the running Intelephense process — useful after editing its licence file or `intelephense.json` configuration, without restarting all of NetBeans. (NetBeans already auto-restarts the server on its own if the process crashes; this action is for a deliberate, on-demand restart.)
+
 ## Building
 
 ```
