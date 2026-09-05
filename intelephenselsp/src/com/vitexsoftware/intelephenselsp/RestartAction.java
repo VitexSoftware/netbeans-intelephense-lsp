@@ -9,7 +9,7 @@ import org.openide.awt.StatusDisplayer;
 
 @ActionID(category = "Tools", id = "com.vitexsoftware.intelephenselsp.RestartAction")
 @ActionRegistration(displayName = "#CTL_RestartAction")
-@ActionReference(path = "Menu/Tools", position = 1500)
+@ActionReference(path = "Menu/Tools", position = 1550)
 public final class RestartAction implements ActionListener {
 
     @Override

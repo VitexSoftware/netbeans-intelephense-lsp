@@ -1,10 +1,12 @@
 package com.vitexsoftware.intelephenselsp.options;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.File;
 import javax.swing.JButton;
+import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,6 +18,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.EventListenerList;
+import javax.swing.event.HyperlinkEvent;
+import org.openide.awt.HtmlBrowser;
 import org.openide.util.RequestProcessor;
 
 final class IntelephenseOptionsPanel extends JPanel {
@@ -68,12 +72,26 @@ final class IntelephenseOptionsPanel extends JPanel {
         add(versionValueLabel, c);
         c.gridwidth = 1;
 
-        JLabel note = new JLabel("<html>Full path to the Intelephense executable, or just <code>intelephense</code> "
-                + "if it is installed globally and on your system PATH (<code>npm i intelephense -g</code>).</html>");
+        JEditorPane note = new JEditorPane();
+        note.setContentType("text/html");
+        note.setEditable(false);
+        note.setOpaque(false);
+        note.setBackground(new Color(0, 0, 0, 0));
+        note.setText("<html><i>Note:</i><br>"
+                + "Full path to the Intelephense executable, or just <code>intelephense</code> "
+                + "if it is installed globally and on your system PATH.<br>"
+                + "Installation instructions can be found on Intelephense's web site.<br>"
+                + "<a href=\"https://intelephense.com\">Learn more</a></html>");
+        note.addHyperlinkListener(e -> {
+            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                HtmlBrowser.URLDisplayer.getDefault().showURL(e.getURL());
+            }
+        });
         c.gridx = 0;
         c.gridy = 2;
         c.gridwidth = 3;
         c.weightx = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(12, 6, 6, 6);
         add(note, c);
 
